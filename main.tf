@@ -4,31 +4,23 @@ provider "aws" {
 	secret_key = "Q9icUne+bnyIEuTOkZUtbMhEO0nZlMsuAkY6JwTL"
 }
 
-variable "subnet_cidr_block" {
-	description = "subnet cidr block"
-}
+variable vpc_cidr_block {}
+variable subnet_cidr_block {}
+variable avail_zone {}
 
 
-variable "vpc_cidr_block" {
-	description = "vpc cidr block"
-}
-
-variable "environment" {
-	description = "environment"
-}
-
-resource "aws_vpc" "terraform_test" {
+resource "aws_vpc" "myapp-vpc" {
 	cidr_block = var.vpc_cidr_block
 	tags = {
-		Name: var.environment
+		Name: var.environmentcidr_blocks[0].name
 	}
 }
 
-resource "aws_subnet" "test_sn-1" {
-	vpc_id = aws_vpc.terraform_test.id
+resource "aws_subnet" "myapp-sn-1" {
+	vpc_id = aws_vpc.myapp-vpc.id
 	cidr_block = var.subnet_cidr_block
-	availability_zone = "us-east-2a"
+	availability_zone = var.avail_zone
 	tags = {
-		Name: "sn-1-dev"
+		Name: var.cidr_blocks[1].name
 	}
 }
