@@ -32,3 +32,24 @@ resource "aws_subnet" "test_sn-1" {
 		Name: "sn-1-dev"
 	}
 }
+
+data "aws_vpc" "existing_vpc" {
+	default = true
+}
+
+resource "aws_subnet" "test_sn-2" {
+	vpc_id = data.aws_vpc.existing_vpc.id
+	cidr_block = "172.31.48.0/20"
+	availability_zone = "us-east-2a"
+	tags = {
+		Name: "sn-2-default"
+	}
+}
+
+output "dev-vpc-id" {
+	value = aws_vpc.terraform_test.id
+}
+
+output "dev-subnet-id" {
+	value = aws_subnet.test_sn-1.id
+}
